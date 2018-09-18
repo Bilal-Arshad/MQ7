@@ -1,0 +1,27 @@
+
+    Serial.println("heating sensor for 1 minute at 5V");
+    analogWrite(A0, 1023);  
+    delay(60000);              
+
+    
+    Serial.println("heating sensor for 1.5 minutes for 1.4V");
+    analogWrite(A0, 1023/3.6);    
+    delay(90000);              
+
+    
+    float sensorValue = analogRead(INPUT_PIN);  
+    Serial.println(sensorValue);
+
+
+    float sensor_volt = sensorValue / 1024 * 5.0;
+    float RS_air = (5.0-sensor_volt) / sensor_volt;
+    Serial.print("Rs air :");
+    Serial.println(RS_air);
+    Serial.print("sensor volt : ");
+    Serial.println(sensor_volt);
+    
+    // following is the regression equation calculated from the datasheet of CO, by collecting points on log scale
+    float ppm = 86.99529 * pow(RS_air/0.36, -1.590791); 
+    Serial.print("ppm :");
+    Serial.println(ppm);
+    delay(1000);
